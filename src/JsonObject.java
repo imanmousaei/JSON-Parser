@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class JsonObject {
     HashMap<String,JsonValue> objects;
     public static String json; // TODO privatesh kon
+    static int index;
 
     public JsonValue getValue(String key){
         return objects.get(key);
@@ -28,26 +29,54 @@ public class JsonObject {
         System.out.println("json = " + json);
     }
 
-    public void processInput(){
-        String[] input = json.split(",\"");
+    private String getInsideKey( char splitBy ){
+        int beginIndex = index , endIndex;
+        while(json.charAt(index) != splitBy){
+            index++;
+        }
 
-        for(int i=0 ; i<input.length ; i++){
-//            String key = input[i].split("\"")[0];
-//            String val = input[i].split("\"")[0];
-//            System.out.println("key = " + key + " val = " + val);
-            System.out.println(input[i]);
+        endIndex = index - 1;
+        index += 2; // " and :
+
+        return json.substring(beginIndex,endIndex);
+    }
+
+    private JsonValue getInsideValue(){
+        if(json.charAt(index) == '\"'){
+            int beginIndex = index++ , endIndex;
+            while(json.charAt(index) != '\"'){
+                index++;
+            }
+            endIndex = index;
+            index += 2; // " and ,
+            return new JsonString(json.substring(beginIndex,endIndex));
+        }
+    }
+
+        public void processInput(){
+        for(int i=0 ; i<json.length() ; i++){
+            index = 1;
+            String key = getInsideKey('\"');
+            JsonValue val = getInsideValue();
+
+
+
         }
     }
 
 
 }
 
-class JsonValue{
+abstract class JsonValue{
 
 }
 
 class JsonString extends JsonValue{
     private String value;
+
+    JsonString(String value){
+        this.value = value;
+    }
 
     public String getValue() {
         return value;
