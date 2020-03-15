@@ -46,7 +46,18 @@ public class Main {
                 "  }\n" +
                 "}";
 
-        JSON.getInput(new Scanner(System.in));
+        JSON.json = "{\n" +
+                "  \"action\": \"passwordGenerator\",\n" +
+                "    \"length\": 52,\n" +
+                "    \"useNumber\": 65437.858,\n" +
+                "    \"useAlphabet\": false,\n" +
+                "  \"action\": \"passwordGenerator\",\n" +
+                "    \"length\": 52,\n" +
+                "    \"useNumber\": 67.858,\n" +
+                "    \"useAlphabet\": TRUE\n" +
+                "}";
+
+        JSON.getInput(System.in);
 
         JSON.processInput();
 
