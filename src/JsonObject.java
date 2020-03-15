@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
+
 public class JsonObject {
     HashMap< String , JsonValue <?>  > objects;
     public static String json; // TODO privateshoon kon
@@ -30,9 +31,9 @@ public class JsonObject {
         System.out.println("json = " + json);
     }
 
-    private String getInsideKey( char splitBy ){
+    private String getInsideKey(){
         int beginIndex = index , endIndex;
-        while(index<json.length()-1 && json.charAt(index) != splitBy){
+        while(index<json.length()-1 && json.charAt(index) != '\"' ){
             index++;
         }
 
@@ -66,14 +67,20 @@ public class JsonObject {
             return new JsonBool(true);
         }
 
-        else if(json.charAt(index) == '{'){
-            // objecte
+        else if(json.charAt(index) == '{'){ // object TODO
+
+//            return new JsonObject();
             return new JsonString("object");
         }
 
         else if(json.charAt(index) == '['){
-            // array
-            return new JsonString("array");
+            ArrayList< JsonValue<?> > temp = new ArrayList<>();
+            while (json.charAt(index) != ']') {
+                index++;
+                temp.add(getInsideValue());
+            }
+            index++;
+            return new JsonArray(temp);
         }
 
         else if(json.charAt(index)>='0' && json.charAt(index)<='9') {
@@ -105,8 +112,8 @@ public class JsonObject {
     }
 
         public void processInput(){
-        for(int i=0 ; i<json.length() ; i++){
-            String key = getInsideKey('\"');
+        while( index<json.length() ){
+            String key = getInsideKey();
             System.out.print("key = " + key + " ; value = ");
 
 
@@ -122,7 +129,7 @@ public class JsonObject {
 
 }
 
-class JsonValue <T> {
+class JsonValue <T> extends JsonObject {
     private T value;
     JsonValue(T value){
         this.value = value;
@@ -165,8 +172,8 @@ class JsonFloat extends JsonValue <Float> {
     }
 }
 
-class JsonArray extends JsonValue < ArrayList<JsonObject> > {
-    JsonArray(ArrayList<JsonObject> value) {
+class JsonArray extends JsonValue < ArrayList< JsonValue<?> > > {
+    JsonArray(ArrayList< JsonValue<?> > value) {
         super(value);
     }
 }
