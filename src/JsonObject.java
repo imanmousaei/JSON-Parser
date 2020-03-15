@@ -1,4 +1,4 @@
-import com.sun.istack.internal.NotNull;
+import com.sun.istack.internal.Nullable;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -6,17 +6,18 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class JsonObject {
-    HashMap<String,JsonValue> objects;
+    HashMap< String , JsonValue <?>  > objects;
     public static String json; // TODO privatesh kon
-    static int index;
+    private int index = 1;
 
-    public JsonValue getValue(String key){
+    public JsonValue <?> getValue(String key){
         return objects.get(key);
     }
 
-    public void getInput(Scanner in){
-//        while(in.hasNextLine()){
-//            json += in.nextLine(); //TODO uncomment
+    public void getInput(InputStream inputStream){
+//        Scanner scan = new Scanner(inputStream);
+//        while(scan.hasNextLine()){
+//            json += scan.nextLine(); //TODO uncomment
 //        }
         StringBuilder sb = new StringBuilder(json);
         sb.deleteCharAt(0);
@@ -31,7 +32,7 @@ public class JsonObject {
 
     private String getInsideKey( char splitBy ){
         int beginIndex = index , endIndex;
-        while(json.charAt(index) != splitBy){
+        while(index<json.length()-1 && json.charAt(index) != splitBy){
             index++;
         }
 
@@ -41,7 +42,7 @@ public class JsonObject {
         return json.substring(beginIndex,endIndex);
     }
 
-    private JsonValue getInsideValue(){
+    private JsonValue<?> getInsideValue(){
         if(json.charAt(index) == '\"'){
             int beginIndex = index++ , endIndex;
             while(json.charAt(index) != '\"'){
@@ -51,13 +52,56 @@ public class JsonObject {
             index += 2; // " and ,
             return new JsonString(json.substring(beginIndex,endIndex));
         }
+
+        else if( Character.toLowerCase( json.charAt(index) ) == 'f' ){
+            index += 6; // false,
+        }
+
+        else if( Character.toLowerCase( json.charAt(index) ) == 't' ){
+            index += 5; // true,
+        }
+
+        else if(json.charAt(index) == '{'){
+            // objecte
+        }
+
+        else if(json.charAt(index) == '['){
+            // array
+        }
+
+        else{
+            int beginIndex = index , endIndex;
+            while(json.charAt(index)>='0' && json.charAt(index)<='9'){
+                index++;
+            }
+            endIndex = index;
+
+            if(json.charAt(index)=='.'){
+                index++;
+                while(json.charAt(index)>='0' && json.charAt(index)<='9'){
+                    index++;
+                }
+                endIndex = index;
+                return new JsonFloat( Float.parseFloat( json.substring(beginIndex, endIndex) ) );
+
+            }
+            else {
+                return new JsonInteger( Integer.parseInt( json.substring(beginIndex, endIndex) ) );
+            }
+
+        }
+
+        return new JsonNull(null);
+
     }
 
         public void processInput(){
         for(int i=0 ; i<json.length() ; i++){
-            index = 1;
             String key = getInsideKey('\"');
-            JsonValue val = getInsideValue();
+            JsonValue<?> val = getInsideValue();
+
+            System.out.print("key = " + key + ";value = ");
+            val.print();
 
 
 
@@ -65,73 +109,61 @@ public class JsonObject {
     }
 
 
-}
-
-abstract class JsonValue{
 
 }
 
-class JsonString extends JsonValue{
-    private String value;
-
-    JsonString(String value){
+class JsonValue <T> {
+    private T value;
+    JsonValue(T value){
         this.value = value;
     }
 
-    public String getValue() {
+    public T getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(T value) {
         this.value = value;
+    }
+
+    public void print(){
+        System.out.println(value);
     }
 }
 
-class JsonBool extends JsonValue {
-    private boolean value;
-
-    public boolean getValue() {
-        return value;
-    }
-
-    public void setValue(boolean value) {
-        this.value = value;
+class JsonString extends JsonValue <String> {
+    JsonString(String value) {
+        super(value);
     }
 }
 
-class JsonInteger extends JsonValue {
-    private int value;
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
+class JsonBool extends JsonValue <Boolean> {
+    JsonBool(boolean value) {
+        super(value);
     }
 }
 
-class JsonFloat extends JsonValue {
-    private float value;
-
-    public float getValue() {
-        return value;
-    }
-
-    public void setValue(float value) {
-        this.value = value;
+class JsonInteger extends JsonValue <Integer> {
+    JsonInteger(int value) {
+        super(value);
     }
 }
 
-class JsonArray extends JsonValue {
-    ArrayList<JsonObject> value;
-
-    public ArrayList<JsonObject> getValue() {
-        return value;
+class JsonFloat extends JsonValue <Float> {
+    JsonFloat(float value) {
+        super(value);
     }
+}
 
-    public void setValue(ArrayList<JsonObject> value) {
-        this.value = value;
+class JsonArray extends JsonValue < ArrayList<JsonObject> > {
+    JsonArray(ArrayList<JsonObject> value) {
+        super(value);
+    }
+}
+
+class JsonNull extends JsonValue {
+    JsonNull(@Nullable Object value) {
+        super(value);
     }
 }
 
