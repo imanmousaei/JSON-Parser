@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class JsonObject {
     HashMap< String , JsonValue <?>  > objects;
     public static String json; // TODO privateshoon kon
-    private int index = 1;
+    private int index = 0;
 
     public JsonValue <?> getValue(String key){
         return objects.get(key);
@@ -32,6 +32,7 @@ public class JsonObject {
     }
 
     private String getInsideKey(){
+        index++;
         int beginIndex = index , endIndex;
         while(index<json.length()-1 && json.charAt(index) != '\"' ){
             index++;
@@ -53,18 +54,23 @@ public class JsonObject {
                 index++;
             }
             endIndex = index;
-            index += 3; // " , "
+            index += 2; // " ,
             return new JsonString(json.substring(beginIndex,endIndex));
         }
 
         else if( Character.toLowerCase( json.charAt(index) ) == 'f' ){
-            index += 7; // false,"
+            index += 6; // false,
             return new JsonBool(false);
         }
 
         else if( Character.toLowerCase( json.charAt(index) ) == 't' ){
-            index += 6; // true,"
+            index += 5; // true,
             return new JsonBool(true);
+        }
+
+        else if( Character.toLowerCase( json.charAt(index) ) == 'n' ){
+            index += 5; // null,
+            return new JsonNull(null);
         }
 
         else if(json.charAt(index) == '{'){ // object TODO
@@ -78,12 +84,13 @@ public class JsonObject {
             while (json.charAt(index) != ']') {
                 index++;
                 temp.add(getInsideValue());
+                temp.get(temp.size()-1).print();
             }
             index++;
             return new JsonArray(temp);
         }
 
-        else if(json.charAt(index)>='0' && json.charAt(index)<='9') {
+        else if(json.charAt(index) == '-' || (json.charAt(index)>='0' && json.charAt(index)<='9') ) {
             int beginIndex = index , endIndex;
             while(json.charAt(index)>='0' && json.charAt(index)<='9'){
                 index++;
@@ -96,19 +103,20 @@ public class JsonObject {
                     index++;
                 }
                 endIndex = index;
-                index += 2; // ,"
+                index ++; // ,
                 return new JsonFloat( Float.parseFloat( json.substring(beginIndex, endIndex) ) );
 
             }
             else {
-                index += 2; // ,"
+                index ++; // ,
                 return new JsonInteger( Integer.parseInt( json.substring(beginIndex, endIndex) ) );
             }
 
         }
 
-        return new JsonNull(null);
-
+//        return new JsonNull(null);
+        index++;
+        return getInsideValue();
     }
 
         public void processInput(){

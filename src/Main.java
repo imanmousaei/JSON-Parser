@@ -48,13 +48,14 @@ public class Main {
 
         JSON.json = "{\n" +
                 "  \"action\": \"passwordGenerator\",\n" +
-                "    \"length\": 52,\n" +
-                "    \"useNumber\": 65437.858,\n" +
+                "    \"length\": 0.052,\n" +
+                "    \"useNumber\": -65437.858,\n" +
                 "    \"useAlphabet\": false,\n" +
                 "  \"action\": \"passwordGenerator\",\n" +
                 "    \"length\": 52,\n" +
                 "    \"useNumber\": 67.858,\n" +
-                "    \"useAlphabet\": TRUE\n" +
+                "    \"useAlphabet\": TRUE,\n" +
+                "\"numbers\": [12,0.2,1,3,1,5,3,2,4,6,-1,0.0003]\n" +
                 "}";
 
         JSON.getInput(System.in);
