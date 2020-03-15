@@ -1,16 +1,34 @@
+import com.sun.istack.internal.NotNull;
+
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
 public class JsonObject {
-    HashMap<String,JsonValue> object;
+    HashMap<String,JsonValue> objects;
     private static String json;
 
-    void getInput(Scanner in){
-        while(in.hasNextLine()){
-            json += in.nextLine();
-        }
+    public JsonValue getValue(String key){
+        return objects.get(key);
+    }
+
+    private static void getInput(Scanner in){
+//        while(in.hasNextLine()){
+//            json += in.nextLine(); //TODO uncomment
+//        }
+        StringBuilder sb = new StringBuilder(json);
+        sb.deleteCharAt(0);
+        sb.deleteCharAt(sb.length()-1);
+
+        json = sb.toString();
+
+//        System.out.println("json = " + json);
+    }
+
+    private static void processInput(){
+        String[] input = json.split(",");
+        System.out.println(input[0].split("\"")[0]);
     }
 
     public static void main(String[] args){
@@ -21,6 +39,11 @@ public class JsonObject {
                 "    \"splitBy\": \",\"\n" +
                 "  }\n" +
                 "}";
+
+        getInput(new Scanner(System.in));
+
+        processInput();
+
 
 
 
