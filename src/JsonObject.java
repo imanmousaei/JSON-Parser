@@ -7,13 +7,13 @@ import java.util.Scanner;
 
 public class JsonObject {
     HashMap<String,JsonValue> objects;
-    private static String json;
+    public static String json; // TODO privatesh kon
 
     public JsonValue getValue(String key){
         return objects.get(key);
     }
 
-    private static void getInput(Scanner in){
+    public void getInput(Scanner in){
 //        while(in.hasNextLine()){
 //            json += in.nextLine(); //TODO uncomment
 //        }
@@ -23,32 +23,20 @@ public class JsonObject {
 
         json = sb.toString();
         json = json.trim();
-        json.replaceAll("\\s","");
+        json = json.replaceAll("\\s+","");
 
         System.out.println("json = " + json);
     }
 
-    private static void processInput(){
-        String[] input = json.split(",");
-//        System.out.println(input[0].split("\"")[0]);
-    }
+    public void processInput(){
+        String[] input = json.split(",\"");
 
-    public static void main(String[] args){
-        json = "{\n" +
-                "  \"action\": \"splitText\",\n" +
-                "  \"data\": {\n" +
-                "    \"text\": \"salam,che,khabar,bla,bla,bla\",\n" +
-                "    \"splitBy\": \",\"\n" +
-                "  }\n" +
-                "}";
-
-        getInput(new Scanner(System.in));
-
-        processInput();
-
-
-
-
+        for(int i=0 ; i<input.length ; i++){
+//            String key = input[i].split("\"")[0];
+//            String val = input[i].split("\"")[0];
+//            System.out.println("key = " + key + " val = " + val);
+            System.out.println(input[i]);
+        }
     }
 
 
