@@ -22,13 +22,15 @@ public class JsonObject {
         sb.deleteCharAt(sb.length()-1);
 
         json = sb.toString();
+        json = json.trim();
+        json.replaceAll("\\s","");
 
-//        System.out.println("json = " + json);
+        System.out.println("json = " + json);
     }
 
     private static void processInput(){
         String[] input = json.split(",");
-        System.out.println(input[0].split("\"")[0]);
+//        System.out.println(input[0].split("\"")[0]);
     }
 
     public static void main(String[] args){
