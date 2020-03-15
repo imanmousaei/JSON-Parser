@@ -81,10 +81,9 @@ public class JsonObject {
 
         else if(json.charAt(index) == '['){
             ArrayList< JsonValue<?> > temp = new ArrayList<>();
-            while (json.charAt(index) != ']') {
-                index++;
+            index++;
+            while (index<json.length()-1 && json.charAt(index) != ']') {
                 temp.add(getInsideValue());
-                temp.get(temp.size()-1).print();
             }
             index++;
             return new JsonArray(temp);
@@ -92,6 +91,11 @@ public class JsonObject {
 
         else if(json.charAt(index) == '-' || (json.charAt(index)>='0' && json.charAt(index)<='9') ) {
             int beginIndex = index , endIndex;
+
+            if(json.charAt(index) == '-'){
+                index++;
+            }
+
             while(json.charAt(index)>='0' && json.charAt(index)<='9'){
                 index++;
             }
@@ -138,7 +142,7 @@ public class JsonObject {
 }
 
 class JsonValue <T> extends JsonObject {
-    private T value;
+    protected T value;
     JsonValue(T value){
         this.value = value;
     }
@@ -183,6 +187,11 @@ class JsonFloat extends JsonValue <Float> {
 class JsonArray extends JsonValue < ArrayList< JsonValue<?> > > {
     JsonArray(ArrayList< JsonValue<?> > value) {
         super(value);
+    }
+    public void print(){
+        for(int i=0 ; i<value.size() ; i++) {
+            System.out.print(value.get(i).value + " ");
+        }
     }
 }
 
