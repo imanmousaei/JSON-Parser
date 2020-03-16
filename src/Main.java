@@ -58,6 +58,21 @@ public class Main {
                 "\"numbers\": [12,0.2,1,3,1,5,3,2,4,6,-1,0.0003]\n" +
                 "}";
 
+        JSON.json = "{\n" +
+                "  \"action\": \"passwordGenerator\",\n" +
+                "  \"data\": {\n" +
+                "    \"length\": 52,\n" +
+                "    \"useNumber\": true,\n" +
+                "    \"useAlphabet\": false\n" +
+                "  },\n" +
+                "  \"action\": \"passwordGenerator\",\n" +
+                "  \"data\": {\n" +
+                "    \"length\": 52,\n" +
+                "    \"useNumber\": true,\n" +
+                "    \"useAlphabet\": false\n" +
+                "  }\n" +
+                "}";
+
         JSON.getInput(System.in);
 
         JSON.processInput();

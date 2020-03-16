@@ -6,13 +6,19 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 
-public class JsonObject {
-    HashMap< String , JsonValue <?>  > objects;
+public class JsonObject extends JsonValue {
+    HashMap< String , JsonValue <?>  > jsonObjects;
     public static String json; // TODO privateshoon kon
-    private int index = 0;
+    private static int index = 0;
+
+    JsonObject(Object value) {
+        super(value);
+    }
+
+    JsonObject(){}
 
     public JsonValue <?> getValue(String key){
-        return objects.get(key);
+        return jsonObjects.get(key);
     }
 
     public void getInput(InputStream inputStream){
@@ -22,7 +28,7 @@ public class JsonObject {
 //        }
         StringBuilder sb = new StringBuilder(json);
         sb.deleteCharAt(0);
-        sb.deleteCharAt(sb.length()-1);
+//        sb.deleteCharAt(sb.length()-1);
 
         json = sb.toString();
         json = json.trim();
@@ -32,6 +38,9 @@ public class JsonObject {
     }
 
     private String getInsideKey(){
+        while (json.charAt(index) != '\"'){
+            index++;
+        }
         index++;
         int beginIndex = index , endIndex;
         while(index<json.length()-1 && json.charAt(index) != '\"' ){
@@ -47,6 +56,7 @@ public class JsonObject {
     private JsonValue<?> getInsideValue(){
         if(index >= json.length()){
             return new JsonNull(null);
+//            return new JsonString("#it's n , index = " + index);
         }
         else if(json.charAt(index) == '\"'){
             int beginIndex = ++index , endIndex;
@@ -71,12 +81,15 @@ public class JsonObject {
         else if( Character.toLowerCase( json.charAt(index) ) == 'n' ){
             index += 5; // null,
             return new JsonNull(null);
+//            return new JsonString("#it's n , index = " + index);
         }
 
-        else if(json.charAt(index) == '{'){ // object TODO
+        else if(json.charAt(index) == '{'){
+            JsonObject object = new JsonObject();
+            index++;
+            object.processInput();
 
-//            return new JsonObject();
-            return new JsonString("object");
+            return object;
         }
 
         else if(json.charAt(index) == '['){
@@ -118,31 +131,41 @@ public class JsonObject {
 
         }
 
-//        return new JsonNull(null);
         index++;
         return getInsideValue();
     }
 
-        public void processInput(){
-        while( index<json.length() ){
+    public void processInput(){
+        while( index<json.length() && json.charAt(index) != '}' ){
             String key = getInsideKey();
-            System.out.print("key = " + key + " ; value = ");
+            System.out.print("key = " + key + " ; value = {");
 
 
             JsonValue<?> val = getInsideValue();
             val.print();
 
+            System.out.println("}");
+
+
+
+//            jsonObjects.put(key,val);
+
 
 
         }
+
+        index++;
     }
 
 
 
 }
 
-class JsonValue <T> extends JsonObject {
+class JsonValue <T> {
     protected T value;
+
+    JsonValue(){}
+
     JsonValue(T value){
         this.value = value;
     }
@@ -156,7 +179,7 @@ class JsonValue <T> extends JsonObject {
     }
 
     public void print(){
-        System.out.println(value);
+        System.out.print(value);
     }
 }
 
@@ -189,9 +212,11 @@ class JsonArray extends JsonValue < ArrayList< JsonValue<?> > > {
         super(value);
     }
     public void print(){
+//        System.out.print("{");
         for(int i=0 ; i<value.size() ; i++) {
             System.out.print(value.get(i).value + " ");
         }
+//        System.out.println("}");
     }
 }
 
