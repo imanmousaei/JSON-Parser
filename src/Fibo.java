@@ -1,23 +1,10 @@
-import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Fibo {
-    static int n;
-    public static long[] fib = new long[n + 1];
-
-    public static long Fib(int n) {
-        if (fib[n] != 0) {
-            return fib[n];
+    public static long calculateFib(int n) {
+        if (n <= 1) {
+            return 1L;
         }
-        return Fib(n - 2) + Fib(n - 1);
-    }
-
-    public static void main(String[] args) {
-        Scanner cin = new Scanner(System.in);
-        n = cin.nextInt();
-        fib[0] = 1;
-        fib[1] = 1;
-
-        System.out.println(Fib(n));
-
+        return calculateFib(n - 2) + calculateFib(n - 1);
     }
 }

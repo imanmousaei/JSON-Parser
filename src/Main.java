@@ -8,7 +8,7 @@ public class Main {
         String json0 = "{\n" +
                 "  \"action\": \"fibonacci\",\n" +
                 "  \"data\": {\n" +
-                "    \"val\": 12\n" +
+                "    \"index\": 6\n" +
                 "  }\n" +
                 "}";
 
@@ -29,7 +29,7 @@ public class Main {
                 "}";
 
 
-        JsonObject JSON = new JsonObject(json1);
+        JsonObject JSON = new JsonObject(json0);
 
         JSON.getInput(System.in);
 
@@ -46,10 +46,22 @@ public class Main {
 
     private static void connectWithKheradExercises(JsonObject json, PrintStream out) {
         String action = json.getString("action");
+        JsonObject data = json.getObject("data");
+
         if (action.equals("fibonacci")) {
+            int n = data.getInt("index");
+            out.println(Fibo.calculateFib(n));
+        }
+        else if (action.equals("splitText")) {
 
         }
-        else if (action.equals("fibonacci")) {
+        else if (action.equals("passwordGenerator")) {
+
+        }
+        else if (action.equals("sortNumber")) {
+
+        }
+        else if (action.equals("studentInfo")) {
 
         }
 
