@@ -78,7 +78,7 @@ public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
         json = json.trim();
         json = json.replaceAll("\\s+","");
 
-//        System.out.println("json = " + json);
+        System.out.println("json = " + json);
     }
 
     private String getInsideString(){
@@ -203,11 +203,11 @@ public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
     public void processInput(){
         while( index<json.length() && json.charAt(index) != '}' ){
             String key = getInsideString();
-//            System.out.print("key = " + key + " ; value = {");
+            System.out.print("key = " + key + " ; value = {");
 
             JsonValue<?> val = getInsideValue();
-//            val.print();
-//            System.out.println("}");
+            val.print();
+            System.out.println("}");
 
             this.value.put(key,val);
         }
