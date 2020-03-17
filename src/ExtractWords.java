@@ -15,8 +15,8 @@ public class ExtractWords {
         return words;
     }
 
-    public static ArrayList<String> extractWordsBySplit(String txt, char splitBy) {
-        String[] words = txt.split(Character.toString(splitBy));
+    public static ArrayList<String> extractWordsBySplit(String txt, String splitBy) {
+        String[] words = txt.split(splitBy);
         return new ArrayList<>(Arrays.asList(words));
     }
 

@@ -2,8 +2,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MergeSort {
-    public static ArrayList<Integer> merge(ArrayList<Integer> sortedList1, ArrayList<Integer> sortedList2) {
-        ArrayList<Integer> sortedList = new ArrayList<>();
+    public static ArrayList<Float> merge(ArrayList<Float> sortedList1, ArrayList<Float> sortedList2) {
+        ArrayList<Float> sortedList = new ArrayList<>();
         int size1 = sortedList1.size(), size2 = sortedList2.size();
         int iterator1 = 0, iterator2 = 0;
         while (iterator1 < size1 && iterator2 < size2) {
@@ -30,30 +30,22 @@ public class MergeSort {
         return sortedList;
     }
 
-    public static ArrayList<Integer> mergeSort(ArrayList<Integer> elements) {
+    public static ArrayList<Float> mergeSort(ArrayList<Float> elements) {
         int size = elements.size();
         if (size <= 1) {
             return elements;
         }
         int mid = size / 2;
 
-        List<Integer> tmp = elements.subList(0, mid);
-        ArrayList<Integer> list1 = new ArrayList<>(tmp);
+        List<Float> tmp = elements.subList(0, mid);
+        ArrayList<Float> list1 = new ArrayList<>(tmp);
         list1 = mergeSort(list1);
 
         tmp = elements.subList(mid, size);
-        ArrayList<Integer> list2 = new ArrayList<>(tmp);
+        ArrayList<Float> list2 = new ArrayList<>(tmp);
         list2 = mergeSort(list2);
 
         return merge(list1, list2);
     }
 
-    public static void main(String[] args) {
-        int[] arr = {2, 5, 1, 4, 6, 4, 8, 2, 5, 8, 0, 3, 1, 5, 7, 8};
-        ArrayList<Integer> list = new ArrayList<>();
-        for (int i = 0; i < arr.length; i++) {
-            list.add(arr[i]);
-        }
-        System.out.println(mergeSort(list));
-    }
 }
