@@ -64,18 +64,14 @@ public class Main {
                 "    \"length\": 52,\n" +
                 "    \"useNumber\": true,\n" +
                 "    \"useAlphabet\": false\n" +
-                "  },\n" +
-                "  \"action\": \"passwordGenerator\",\n" +
-                "  \"data\": {\n" +
-                "    \"length\": 52,\n" +
-                "    \"useNumber\": true,\n" +
-                "    \"useAlphabet\": false\n" +
-                "  }\n" +
                 "}";
 
         JSON.getInput(System.in);
 
         JSON.processInput();
+
+        System.out.print("here : ");
+        JSON.getValue("data").print();
 
 //        System.out.println( Float.parseFloat("-0.1") );
 
