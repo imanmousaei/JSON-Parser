@@ -34,6 +34,9 @@ public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
     JsonObject(String json) {
         value = new HashMap<>();
         this.json = json;
+//        System.out.println();
+//        System.out.println("json = " + json);
+
     }
 
     JsonObject(){
@@ -60,6 +63,10 @@ public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
         JsonBool tmp = (JsonBool)value.get(key);
         return tmp.getValue();
     }
+    public ArrayList< JsonValue<?> > getArrayList(String key){
+        JsonArray tmp = (JsonArray)value.get(key);
+        return tmp.getValue();
+    }
     public JsonObject getObject(String key){
         return (JsonObject)value.get(key);
     }
@@ -78,7 +85,7 @@ public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
         json = json.trim();
         json = json.replaceAll("\\s+","");
 
-        System.out.println("json = " + json);
+//        System.out.println("json = " + json);
     }
 
     private String getInsideString(){
@@ -116,11 +123,10 @@ public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
              }
 
              index++;
-
         }
 
-        endIndex = index;
-        index += 2; // " and :
+        endIndex = index + 1;
+        index += 2; // } and :
 
         return json.substring(beginIndex,endIndex);
     }
@@ -167,21 +173,22 @@ public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
             return new JsonArray(temp);
         }
 
-        else if(json.charAt(index) == '-' || (json.charAt(index)>='0' && json.charAt(index)<='9') ) {
+        else if(json.charAt(index) == '-' || Character.isDigit( json.charAt(index) ) ) {
             int beginIndex = index , endIndex;
 
             if(json.charAt(index) == '-'){
                 index++;
             }
 
-            while(json.charAt(index)>='0' && json.charAt(index)<='9'){
+            while( Character.isDigit( json.charAt(index) ) ){
                 index++;
+//                System.out.println("index = " + index + " ; charAt = " + json.charAt(index));
             }
             endIndex = index;
 
             if(json.charAt(index)=='.'){
                 index++;
-                while(json.charAt(index)>='0' && json.charAt(index)<='9'){
+                while( Character.isDigit( json.charAt(index) ) ){
                     index++;
                 }
                 endIndex = index;
@@ -203,11 +210,11 @@ public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
     public void processInput(){
         while( index<json.length() && json.charAt(index) != '}' ){
             String key = getInsideString();
-            System.out.print("key = " + key + " ; value = {");
+//            System.out.print("key = " + key + " ; value = {");
 
             JsonValue<?> val = getInsideValue();
-            val.print();
-            System.out.println("}");
+//            val.print();
+//            System.out.println("}");
 
             this.value.put(key,val);
         }

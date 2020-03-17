@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -6,22 +7,37 @@ public class Main {
         String json0 = "{\n" +
                 "  \"action\": \"fibonacci\",\n" +
                 "  \"data\": {\n" +
-                "    \"index\": 25\n" +
+                "    \"val\": 12\n" +
+                "  }\n" +
+                "}";
+
+        String json1 = "{\n" +
+                "  \"action\": \"studentInfo\",\n" +
+                "  \"data\": {\n" +
+                "    \"studentByGPA\": [\n" +
+                "      {\n" +
+                "        \"name\": \"hossein\",\n" +
+                "        \"GPA\": 12\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"name\": \"reza\",\n" +
+                "        \"GPA\": 18.5\n" +
+                "      }\n" +
+                "    ]\n" +
                 "  }\n" +
                 "}";
 
 
 
-        JsonObject JSON = new JsonObject(json0);
+        JsonObject JSON = new JsonObject(json1);
 
         JSON.getInput(System.in);
 
         JSON.processInput();
 
         System.out.print("here : ");
+        JsonObject tmp = (JsonObject) JSON.getObject("data").getArrayList("studentByGPA").get(0);
 
-//        JSON.getValue("numbers").print();
-
-//        System.out.println( JSON.getString("text")  );
+        System.out.println( tmp.getInt("GPA") );
     }
 }
