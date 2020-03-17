@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main {
@@ -71,10 +72,9 @@ public class Main {
         JSON.processInput();
 
         System.out.print("here : ");
-        JSON.getValue("data").print();
-
-//        System.out.println( Float.parseFloat("-0.1") );
-
+//        JSON.getValue("data").print();
+        JsonObject obj = (JsonObject)( JSON.getValue("data"));
+        obj.getValue("length").print();
 
     }
 }
