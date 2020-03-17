@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-class JsonValue <T> {
+class JsonValue<T> {
     protected T value;
 
-    JsonValue(){}
+    JsonValue() {
+    }
 
-    JsonValue(T value){
+    JsonValue(T value) {
         this.value = value;
     }
 
@@ -22,12 +23,12 @@ class JsonValue <T> {
         this.value = value;
     }
 
-    public void print(){
+    public void print() {
         System.out.print(value);
     }
 }
 
-public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
+public class JsonObject extends JsonValue<HashMap<String, JsonValue<?>>> {
     private String json;
     private int index = 0;
 
@@ -39,41 +40,47 @@ public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
 
     }
 
-    JsonObject(){
+    JsonObject() {
         value = new HashMap<>();
     }
 
     // <getters>
-    public JsonValue <?> getValue(String key){
+    public JsonValue<?> getValue(String key) {
         return value.get(key);
     }
-    public int getInt(String key){
-        JsonInteger tmp = (JsonInteger)value.get(key);
+
+    public int getInt(String key) {
+        JsonInteger tmp = (JsonInteger) value.get(key);
         return tmp.getValue();
     }
-    public float getFloat(String key){
-        JsonFloat tmp = (JsonFloat)value.get(key);
+
+    public float getFloat(String key) {
+        JsonFloat tmp = (JsonFloat) value.get(key);
         return tmp.getValue();
     }
-    public String getString(String key){
-        JsonString tmp = (JsonString)value.get(key);
+
+    public String getString(String key) {
+        JsonString tmp = (JsonString) value.get(key);
         return tmp.getValue();
     }
-    public boolean getBool(String key){
-        JsonBool tmp = (JsonBool)value.get(key);
+
+    public boolean getBool(String key) {
+        JsonBool tmp = (JsonBool) value.get(key);
         return tmp.getValue();
     }
-    public ArrayList< JsonValue<?> > getArrayList(String key){
-        JsonArray tmp = (JsonArray)value.get(key);
+
+    public ArrayList<JsonValue<?>> getArrayList(String key) {
+        JsonArray tmp = (JsonArray) value.get(key);
         return tmp.getValue();
     }
-    public JsonObject getObject(String key){
-        return (JsonObject)value.get(key);
+
+    public JsonObject getObject(String key) {
+        return (JsonObject) value.get(key);
     }
     // </getters>
 
 
-    public void getInput(InputStream inputStream){
+    public void getInput(InputStream inputStream) {
 //        Scanner scan = new Scanner(inputStream);
 //        while(scan.hasNextLine()){
 //            json += scan.nextLine(); //TODO uncomment
@@ -83,122 +90,122 @@ public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
 
         json = sb.toString();
         json = json.trim();
-        json = json.replaceAll("\\s+","");
+        json = json.replaceAll("\\s+", "");
 
 //        System.out.println("json = " + json);
     }
 
-    private String getInsideString(){
-        while (json.charAt(index) != '\"'){
+    private String getInsideString() {
+        while (json.charAt(index) != '\"') {
             index++;
         }
         index++;
-        int beginIndex = index , endIndex;
-        while(index<json.length()-1 && json.charAt(index) != '\"' ){
+        int beginIndex = index, endIndex;
+        while (index < json.length() - 1 && json.charAt(index) != '\"') {
             index++;
         }
 
         endIndex = index;
         index += 2; // " and :
 
-        return json.substring(beginIndex,endIndex);
+        return json.substring(beginIndex, endIndex);
     }
 
-    private String getInsideObject(){
-        while (json.charAt(index) != '{'){
+    private String getInsideObject() {
+        while (json.charAt(index) != '{') {
             index++;
         }
         index++;
-        int cnt = 1,beginIndex = index , endIndex;
-        while(index<json.length()-1){
-             if(json.charAt(index) == '}'){
-                 cnt--;
-             }
-             else if(json.charAt(index) == '{'){
-                 cnt++;
-             }
+        int cnt = 1, beginIndex = index, endIndex;
+        while (index < json.length() - 1) {
+            if (json.charAt(index) == '}') {
+                cnt--;
+            }
+            else if (json.charAt(index) == '{') {
+                cnt++;
+            }
 
-             if(cnt == 0){
-                 break;
-             }
+            if (cnt == 0) {
+                break;
+            }
 
-             index++;
+            index++;
         }
 
         endIndex = index + 1;
         index += 2; // } and :
 
-        return json.substring(beginIndex,endIndex);
+        return json.substring(beginIndex, endIndex);
     }
 
-    private JsonValue<?> getInsideValue(){
-        if(index >= json.length()){
+    private JsonValue<?> getInsideValue() {
+        if (index >= json.length()) {
             return new JsonNull(null);
 //            return new JsonString("#it's n , index = " + index);
         }
-        else if(json.charAt(index) == '\"'){
+        else if (json.charAt(index) == '\"') {
             return new JsonString(getInsideString());
         }
 
-        else if( Character.toLowerCase( json.charAt(index) ) == 'f' ){
+        else if (Character.toLowerCase(json.charAt(index)) == 'f') {
             index += 6; // false,
             return new JsonBool(false);
         }
 
-        else if( Character.toLowerCase( json.charAt(index) ) == 't' ){
+        else if (Character.toLowerCase(json.charAt(index)) == 't') {
             index += 5; // true,
             return new JsonBool(true);
         }
 
-        else if( Character.toLowerCase( json.charAt(index) ) == 'n' ){
+        else if (Character.toLowerCase(json.charAt(index)) == 'n') {
             index += 5; // null,
             return new JsonNull(null);
 //            return new JsonString("#it's n , index = " + index);
         }
 
-        else if(json.charAt(index) == '{'){
-            JsonObject object = new JsonObject( getInsideObject() );
+        else if (json.charAt(index) == '{') {
+            JsonObject object = new JsonObject(getInsideObject());
             object.processInput();
 
             return object;
         }
 
-        else if(json.charAt(index) == '['){
-            ArrayList< JsonValue<?> > temp = new ArrayList<>();
+        else if (json.charAt(index) == '[') {
+            ArrayList<JsonValue<?>> temp = new ArrayList<>();
             index++;
-            while (index<json.length()-1 && json.charAt(index) != ']') {
+            while (index < json.length() - 1 && json.charAt(index) != ']') {
                 temp.add(getInsideValue());
             }
             index++;
             return new JsonArray(temp);
         }
 
-        else if(json.charAt(index) == '-' || Character.isDigit( json.charAt(index) ) ) {
-            int beginIndex = index , endIndex;
+        else if (json.charAt(index) == '-' || Character.isDigit(json.charAt(index))) {
+            int beginIndex = index, endIndex;
 
-            if(json.charAt(index) == '-'){
+            if (json.charAt(index) == '-') {
                 index++;
             }
 
-            while( Character.isDigit( json.charAt(index) ) ){
+            while (Character.isDigit(json.charAt(index))) {
                 index++;
 //                System.out.println("index = " + index + " ; charAt = " + json.charAt(index));
             }
             endIndex = index;
 
-            if(json.charAt(index)=='.'){
+            if (json.charAt(index) == '.') {
                 index++;
-                while( Character.isDigit( json.charAt(index) ) ){
+                while (Character.isDigit(json.charAt(index))) {
                     index++;
                 }
                 endIndex = index;
-                index ++; // ,
-                return new JsonFloat( Float.parseFloat( json.substring(beginIndex, endIndex) ) );
+                index++; // ,
+                return new JsonFloat(Float.parseFloat(json.substring(beginIndex, endIndex)));
 
             }
             else {
-                index ++; // ,
-                return new JsonInteger( Integer.parseInt( json.substring(beginIndex, endIndex) ) );
+                index++; // ,
+                return new JsonInteger(Integer.parseInt(json.substring(beginIndex, endIndex)));
             }
 
         }
@@ -207,8 +214,8 @@ public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
         return getInsideValue();
     }
 
-    public void processInput(){
-        while( index<json.length() && json.charAt(index) != '}' ){
+    public void processInput() {
+        while (index < json.length() && json.charAt(index) != '}') {
             String key = getInsideString();
 //            System.out.print("key = " + key + " ; value = {");
 
@@ -216,47 +223,47 @@ public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
 //            val.print();
 //            System.out.println("}");
 
-            this.value.put(key,val);
+            this.value.put(key, val);
         }
         index++;
     }
 
 
-
 }
 
 
-class JsonString extends JsonValue <String> {
+class JsonString extends JsonValue<String> {
     JsonString(String value) {
         super(value);
     }
 }
 
-class JsonBool extends JsonValue <Boolean> {
+class JsonBool extends JsonValue<Boolean> {
     JsonBool(boolean value) {
         super(value);
     }
 }
 
-class JsonInteger extends JsonValue <Integer> {
+class JsonInteger extends JsonValue<Integer> {
     JsonInteger(int value) {
         super(value);
     }
 }
 
-class JsonFloat extends JsonValue <Float> {
+class JsonFloat extends JsonValue<Float> {
     JsonFloat(float value) {
         super(value);
     }
 }
 
-class JsonArray extends JsonValue < ArrayList< JsonValue<?> > > {
-    JsonArray(ArrayList< JsonValue<?> > value) {
+class JsonArray extends JsonValue<ArrayList<JsonValue<?>>> {
+    JsonArray(ArrayList<JsonValue<?>> value) {
         super(value);
     }
-    public void print(){
+
+    public void print() {
 //        System.out.print("{");
-        for(int i=0 ; i<value.size() ; i++) {
+        for (int i = 0; i < value.size(); i++) {
             System.out.print(value.get(i).value + " ");
         }
 //        System.out.println("}");
