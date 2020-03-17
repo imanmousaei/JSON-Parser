@@ -28,23 +28,43 @@ class JsonValue <T> {
 }
 
 public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
-//    HashMap< String , JsonValue <?> > jsonObjects = new HashMap<>();
-    public String json; // TODO privateshoon kon
+    private String json;
     private int index = 0;
 
     JsonObject(String json) {
-        this.json = json;
         value = new HashMap<>();
-        System.out.println("my jason = " + json);
+        this.json = json;
     }
 
     JsonObject(){
         value = new HashMap<>();
     }
 
+    // <getters>
     public JsonValue <?> getValue(String key){
         return value.get(key);
     }
+    public int getInt(String key){
+        JsonInteger tmp = (JsonInteger)value.get(key);
+        return tmp.getValue();
+    }
+    public float getFloat(String key){
+        JsonFloat tmp = (JsonFloat)value.get(key);
+        return tmp.getValue();
+    }
+    public String getString(String key){
+        JsonString tmp = (JsonString)value.get(key);
+        return tmp.getValue();
+    }
+    public boolean getBool(String key){
+        JsonBool tmp = (JsonBool)value.get(key);
+        return tmp.getValue();
+    }
+    public JsonObject getObject(String key){
+        return (JsonObject)value.get(key);
+    }
+    // </getters>
+
 
     public void getInput(InputStream inputStream){
 //        Scanner scan = new Scanner(inputStream);
@@ -53,13 +73,12 @@ public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
 //        }
         StringBuilder sb = new StringBuilder(json);
         sb.deleteCharAt(0);
-//        sb.deleteCharAt(sb.length()-1);
 
         json = sb.toString();
         json = json.trim();
         json = json.replaceAll("\\s+","");
 
-        System.out.println("json = " + json);
+//        System.out.println("json = " + json);
     }
 
     private String getInsideString(){
@@ -184,18 +203,14 @@ public class JsonObject extends JsonValue< HashMap< String,JsonValue<?> > > {
     public void processInput(){
         while( index<json.length() && json.charAt(index) != '}' ){
             String key = getInsideString();
-            System.out.print("key = " + key + " ; value = {");
-
+//            System.out.print("key = " + key + " ; value = {");
 
             JsonValue<?> val = getInsideValue();
-            val.print();
-
-            System.out.println("}");
+//            val.print();
+//            System.out.println("}");
 
             this.value.put(key,val);
-
         }
-
         index++;
     }
 

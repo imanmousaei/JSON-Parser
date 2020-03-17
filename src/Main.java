@@ -3,8 +3,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args){
-        JsonObject JSON = new JsonObject();
-        JSON.json = "{\n" +
+        String json1 = "{\n" +
                 "  \"action\": \"splitText\",\n" +
                 "  \"data\": {\n" +
                 "    \"text\": \"salam,che,khabar,bla,bla,bla\",\n" +
@@ -47,7 +46,7 @@ public class Main {
                 "  }\n" +
                 "}";
 
-        JSON.json = "{\n" +
+        String json2 = "{\n" +
                 "  \"action\": \"passwordGenerator\",\n" +
                 "    \"length\": 0.052,\n" +
                 "    \"useNumber\": -65437.858,\n" +
@@ -59,7 +58,7 @@ public class Main {
                 "\"numbers\": [12,0.2,1,3,1,5,3,2,4,6,-1,0.0003]\n" +
                 "}";
 
-        JSON.json = "{\n" +
+        String json3 = "{\n" +
                 "  \"action\": \"passwordGenerator\",\n" +
                 "  \"data\": {\n" +
                 "    \"length\": 52,\n" +
@@ -67,14 +66,14 @@ public class Main {
                 "    \"useAlphabet\": false\n" +
                 "}";
 
+        JsonObject JSON = new JsonObject(json3);
+
         JSON.getInput(System.in);
 
         JSON.processInput();
 
         System.out.print("here : ");
-//        JSON.getValue("data").print();
-        JsonObject obj = (JsonObject)( JSON.getValue("data"));
-        obj.getValue("length").print();
 
+        System.out.println( JSON.getObject("data").getBool("useAlphabet")  );
     }
 }
