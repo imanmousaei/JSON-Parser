@@ -1,8 +1,8 @@
 public class Student implements Comparable<Student> {
     private String name;
-    private float GPA;
+    private double GPA;
 
-    Student(String name, float GPA) {
+    Student(String name, double GPA) {
         this.name = name;
         this.GPA = GPA;
     }

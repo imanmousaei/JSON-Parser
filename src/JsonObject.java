@@ -49,13 +49,8 @@ public class JsonObject extends JsonValue<HashMap<String, JsonValue<?>>> {
         return value.get(key);
     }
 
-    public int getInt(String key) {
-        JsonInteger tmp = (JsonInteger) value.get(key);
-        return tmp.getValue();
-    }
-
-    public float getFloat(String key) {
-        JsonFloat tmp = (JsonFloat) value.get(key);
+    public double getDouble(String key) {
+        JsonDouble tmp = (JsonDouble) value.get(key);
         return tmp.getValue();
     }
 
@@ -199,14 +194,10 @@ public class JsonObject extends JsonValue<HashMap<String, JsonValue<?>>> {
                     index++;
                 }
                 endIndex = index;
-                index++; // ,
-                return new JsonFloat(Float.parseFloat(json.substring(beginIndex, endIndex)));
+            }
 
-            }
-            else {
-                index++; // ,
-                return new JsonInteger(Integer.parseInt(json.substring(beginIndex, endIndex)));
-            }
+            index++; // ,
+            return new JsonDouble(Double.parseDouble(json.substring(beginIndex, endIndex)));
 
         }
 
@@ -244,14 +235,8 @@ class JsonBool extends JsonValue<Boolean> {
     }
 }
 
-class JsonInteger extends JsonValue<Integer> {
-    JsonInteger(int value) {
-        super(value);
-    }
-}
-
-class JsonFloat extends JsonValue<Float> {
-    JsonFloat(float value) {
+class JsonDouble extends JsonValue<Double> {
+    JsonDouble(Double value) {
         super(value);
     }
 }

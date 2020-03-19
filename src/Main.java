@@ -92,7 +92,7 @@ public class Main {
                 "}";
 
 
-        JsonObject JSON = new JsonObject(json5);
+        JsonObject JSON = new JsonObject(json3);
 
         JSON.getInput(System.in);
 
@@ -112,7 +112,7 @@ public class Main {
         JsonObject data = json.getObject("data");
 
         if (action.equals("fibonacci")) {
-            int n = data.getInt("index");
+            int n = (int) data.getDouble("index");
             out.println(Fibo.calculateFib(n));
         }
         else if (action.equals("splitText")) {
@@ -121,15 +121,15 @@ public class Main {
             printWords(ExtractWords.extractWordsBySplit(text, splitBy), out);
         }
         else if (action.equals("passwordGenerator")) {
-            int length = data.getInt("length");
+            int length = (int) data.getDouble("length");
             boolean useNumber = data.getBool("useNumber");
             boolean useAlphabet = data.getBool("useAlphabet");
             out.println(Password.generatePassword(length, useNumber, useAlphabet));
         }
         else if (action.equals("sortNumber")) {
-            ArrayList<Float> numbers = getFloatArrayList(data);
+            ArrayList<Double> numbers = getDoubleArrayList(data);
             numbers = MergeSort.mergeSort(numbers);
-            for (float num : numbers) {
+            for (double num : numbers) {
                 System.out.print(num + " ");
             }
         }
@@ -143,18 +143,12 @@ public class Main {
 
     }
 
-    private static ArrayList<Float> getFloatArrayList(JsonObject data) {
-        ArrayList<Float> numbers = new ArrayList<>();
+    private static ArrayList<Double> getDoubleArrayList(JsonObject data) {
+        ArrayList<Double> numbers = new ArrayList<>();
         ArrayList<JsonValue<?>> values = data.getArrayList("numbers");
         for (JsonValue<?> val : values) {
-            try {
-                JsonFloat tmp = (JsonFloat) val;
-                numbers.add(tmp.getValue());
-            }
-            catch (ClassCastException e) {
-                JsonInteger tmp = (JsonInteger) val;
-                numbers.add((float) tmp.getValue());
-            }
+            JsonDouble tmp = (JsonDouble) val;
+            numbers.add(tmp.getValue());
         }
         return numbers;
     }
@@ -165,13 +159,7 @@ public class Main {
         for (JsonValue<?> val : values) {
             JsonObject object = (JsonObject) val;
             String name = object.getString("name");
-            float GPA;
-            try {
-                GPA = object.getFloat("GPA");
-            }
-            catch (ClassCastException e) {
-                GPA = (float) object.getInt("GPA");
-            }
+            double GPA = object.getDouble("GPA");
             students.add(new Student(name, GPA));
         }
         return students;
