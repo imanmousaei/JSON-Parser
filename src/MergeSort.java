@@ -1,13 +1,13 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class MergeSort {
-    public static ArrayList<Float> merge(ArrayList<Float> sortedList1, ArrayList<Float> sortedList2) {
-        ArrayList<Float> sortedList = new ArrayList<>();
+public class MergeSort<T extends Comparable<T>> {
+    public static <T extends Comparable<T>> ArrayList<T> merge(ArrayList<T> sortedList1, ArrayList<T> sortedList2) {
+        ArrayList<T> sortedList = new ArrayList<>();
         int size1 = sortedList1.size(), size2 = sortedList2.size();
         int iterator1 = 0, iterator2 = 0;
         while (iterator1 < size1 && iterator2 < size2) {
-            if (sortedList1.get(iterator1) >= sortedList2.get(iterator2)) {
+            if (sortedList1.get(iterator1).compareTo(sortedList2.get(iterator2)) >= 0) { // T1 >= T2
                 sortedList.add(sortedList1.get(iterator1));
                 iterator1++;
             }
@@ -30,22 +30,27 @@ public class MergeSort {
         return sortedList;
     }
 
-    public static ArrayList<Float> mergeSort(ArrayList<Float> elements) {
+    public static <T extends Comparable<T>> ArrayList<T> mergeSort(ArrayList<T> elements) {
         int size = elements.size();
         if (size <= 1) {
             return elements;
         }
         int mid = size / 2;
 
-        List<Float> tmp = elements.subList(0, mid);
-        ArrayList<Float> list1 = new ArrayList<>(tmp);
+        List<T> tmp = elements.subList(0, mid);
+        ArrayList<T> list1 = new ArrayList<>(tmp);
         list1 = mergeSort(list1);
 
         tmp = elements.subList(mid, size);
-        ArrayList<Float> list2 = new ArrayList<>(tmp);
+        ArrayList<T> list2 = new ArrayList<>(tmp);
         list2 = mergeSort(list2);
 
         return merge(list1, list2);
     }
+
+//    public static void main(String[] args) {
+//        int[] a = {1,2,2,34,2,1,6,43,231,54,21,1,54,5,76};
+//
+//    }
 
 }

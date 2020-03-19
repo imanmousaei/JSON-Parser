@@ -28,6 +28,53 @@ public class Main {
                 "  }\n" +
                 "}";
 
+        String json3 = "{\n" +
+                "  \"action\": \"sortNumber\",\n" +
+                "  \"data\": {\n" +
+                "    \"numbers\": [12,0.2,1,3,1,5,3,2,4,6,-1,0.0003]\n" +
+                "  }\n" +
+                "}";
+
+        String json4 = "{\n" +
+                "  \"action\": \"studentInfo\",\n" +
+                "  \"data\": {\n" +
+                "    \"studentByGPA\": [\n" +
+                "      {\n" +
+                "        \"name\": \"hossein\",\n" +
+                "        \"GPA\": 12\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"name\": \"reza\",\n" +
+                "        \"GPA\": 18.5\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "}";
+
+        String json5 = "{\n" +
+                "  \"action\": \"studentInfo\",\n" +
+                "  \"data\": {\n" +
+                "    \"studentByGPA\": [\n" +
+                "      {\n" +
+                "        \"name\": \"hossein\",\n" +
+                "        \"GPA\": 12\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"name\": \"reza\",\n" +
+                "        \"GPA\": 18.5\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"name\": \"alireza\",\n" +
+                "        \"GPA\": 18.5\n" +
+                "      },\n" +
+                "      {\n" +
+                "        \"name\": \"ali\",\n" +
+                "        \"GPA\": 18.5\n" +
+                "      }\n" +
+                "    ]\n" +
+                "  }\n" +
+                "}";
+
         String json155 = "{\n" +
                 "  \"action\": \"studentInfo\",\n" +
                 "  \"data\": {\n" +
@@ -45,7 +92,7 @@ public class Main {
                 "}";
 
 
-        JsonObject JSON = new JsonObject(json2);
+        JsonObject JSON = new JsonObject(json5);
 
         JSON.getInput(System.in);
 
@@ -80,13 +127,54 @@ public class Main {
             out.println(Password.generatePassword(length, useNumber, useAlphabet));
         }
         else if (action.equals("sortNumber")) {
-
-//            out.println(MergeSort.mergeSort(list));
+            ArrayList<Float> numbers = getFloatArrayList(data);
+            numbers = MergeSort.mergeSort(numbers);
+            for (float num : numbers) {
+                System.out.print(num + " ");
+            }
         }
         else if (action.equals("studentInfo")) {
-
+            ArrayList<Student> students = getStudentArrayList(data);
+            students = MergeSort.mergeSort(students);
+            for (Student st : students) {
+                st.print();
+            }
         }
 
+    }
+
+    private static ArrayList<Float> getFloatArrayList(JsonObject data) {
+        ArrayList<Float> numbers = new ArrayList<>();
+        ArrayList<JsonValue<?>> values = data.getArrayList("numbers");
+        for (JsonValue<?> val : values) {
+            try {
+                JsonFloat tmp = (JsonFloat) val;
+                numbers.add(tmp.getValue());
+            }
+            catch (ClassCastException e) {
+                JsonInteger tmp = (JsonInteger) val;
+                numbers.add((float) tmp.getValue());
+            }
+        }
+        return numbers;
+    }
+
+    private static ArrayList<Student> getStudentArrayList(JsonObject data) {
+        ArrayList<Student> students = new ArrayList<>();
+        ArrayList<JsonValue<?>> values = data.getArrayList("studentByGPA");
+        for (JsonValue<?> val : values) {
+            JsonObject object = (JsonObject) val;
+            String name = object.getString("name");
+            float GPA;
+            try {
+                GPA = object.getFloat("GPA");
+            }
+            catch (ClassCastException e) {
+                GPA = (float) object.getInt("GPA");
+            }
+            students.add(new Student(name, GPA));
+        }
+        return students;
     }
 
     static void printWords(ArrayList<String> words, PrintStream out) {
