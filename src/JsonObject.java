@@ -35,9 +35,6 @@ public class JsonObject extends JsonValue<HashMap<String, JsonValue<?>>> {
     JsonObject(String json) {
         value = new HashMap<>();
         this.json = json;
-//        System.out.println();
-//        System.out.println("json = " + json);
-
     }
 
     JsonObject() {
@@ -86,8 +83,6 @@ public class JsonObject extends JsonValue<HashMap<String, JsonValue<?>>> {
         json = sb.toString();
         json = json.trim();
         json = json.replaceAll("\\s+", "");
-
-//        System.out.println("json = " + json);
     }
 
     private String getInsideString() {
@@ -136,7 +131,6 @@ public class JsonObject extends JsonValue<HashMap<String, JsonValue<?>>> {
     private JsonValue<?> getInsideValue() {
         if (index >= json.length()) {
             return new JsonNull(null);
-//            return new JsonString("#it's n , index = " + index);
         }
         else if (json.charAt(index) == '\"') {
             return new JsonString(getInsideString());
@@ -155,7 +149,6 @@ public class JsonObject extends JsonValue<HashMap<String, JsonValue<?>>> {
         else if (Character.toLowerCase(json.charAt(index)) == 'n') {
             index += 5; // null,
             return new JsonNull(null);
-//            return new JsonString("#it's n , index = " + index);
         }
 
         else if (json.charAt(index) == '{') {
@@ -184,7 +177,6 @@ public class JsonObject extends JsonValue<HashMap<String, JsonValue<?>>> {
 
             while (Character.isDigit(json.charAt(index))) {
                 index++;
-//                System.out.println("index = " + index + " ; charAt = " + json.charAt(index));
             }
             endIndex = index;
 
@@ -208,12 +200,7 @@ public class JsonObject extends JsonValue<HashMap<String, JsonValue<?>>> {
     public void processInput() {
         while (index < json.length() && json.charAt(index) != '}') {
             String key = getInsideString();
-//            System.out.print("key = " + key + " ; value = {");
-
             JsonValue<?> val = getInsideValue();
-//            val.print();
-//            System.out.println("}");
-
             this.value.put(key, val);
         }
         index++;
@@ -247,11 +234,9 @@ class JsonArray extends JsonValue<ArrayList<JsonValue<?>>> {
     }
 
     public void print() {
-//        System.out.print("{");
         for (int i = 0; i < value.size(); i++) {
             System.out.print(value.get(i).value + " ");
         }
-//        System.out.println("}");
     }
 }
 

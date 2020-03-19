@@ -98,11 +98,15 @@ public class Main {
 
         JSON.processInput();
 
+        JsonSerializer serializer = new JsonSerializer(JSON);
+
+        System.out.println(serializer.getJson());
+
 //        System.out.print("here : ");
 //        JsonObject tmp = (JsonObject) JSON.getObject("data").getArrayList("studentByGPA").get(0);
 //        System.out.println( tmp.getInt("GPA") );
 
-        connectWithKheradExercises(JSON, System.out);
+//        connectWithKheradExercises(JSON, System.out);
 
 
     }
