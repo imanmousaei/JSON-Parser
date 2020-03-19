@@ -18,6 +18,16 @@ public class Main {
                 "    \"splitBy\": \",\"\n" +
                 "  }\n" +
                 "}";
+
+        String json2 = "{\n" +
+                "  \"action\": \"passwordGenerator\",\n" +
+                "  \"data\": {\n" +
+                "    \"length\": 52,\n" +
+                "    \"useNumber\": true,\n" +
+                "    \"useAlphabet\": false\n" +
+                "  }\n" +
+                "}";
+
         String json155 = "{\n" +
                 "  \"action\": \"studentInfo\",\n" +
                 "  \"data\": {\n" +
@@ -35,7 +45,7 @@ public class Main {
                 "}";
 
 
-        JsonObject JSON = new JsonObject(json1);
+        JsonObject JSON = new JsonObject(json2);
 
         JSON.getInput(System.in);
 
@@ -61,10 +71,13 @@ public class Main {
         else if (action.equals("splitText")) {
             String text = data.getString("text");
             String splitBy = data.getString("splitBy");
-            printWords( ExtractWords.extractWordsBySplit(text,splitBy) , out );
+            printWords(ExtractWords.extractWordsBySplit(text, splitBy), out);
         }
         else if (action.equals("passwordGenerator")) {
-
+            int length = data.getInt("length");
+            boolean useNumber = data.getBool("useNumber");
+            boolean useAlphabet = data.getBool("useAlphabet");
+            out.println(Password.generatePassword(length, useNumber, useAlphabet));
         }
         else if (action.equals("sortNumber")) {
 
@@ -76,8 +89,8 @@ public class Main {
 
     }
 
-    static void printWords(ArrayList<String> words,PrintStream out){
-        for(String word:words){
+    static void printWords(ArrayList<String> words, PrintStream out) {
+        for (String word : words) {
             out.println(word);
         }
     }
