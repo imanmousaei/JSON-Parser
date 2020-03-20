@@ -49,7 +49,7 @@ public class JsonSerializer {
         }
         else if (jsonValue.getClass() == JsonArray.class) {
             ArrayList<JsonValue<?>> list = ((JsonArray) jsonValue).getValue();
-            json += "[ ";
+            json += "[ \n";
             tabs++;
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).getClass() == JsonObject.class) {
