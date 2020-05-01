@@ -23,7 +23,7 @@ public class JsonSerializer {
             json += "\"" + entry.getKey() + "\" : ";
             serializeClasses(entry.getValue());
 
-            if (i < map.size() - 1) {
+            if (i + 1 < map.size()) {
                 json += " , \n";
             }
             else {
@@ -37,6 +37,8 @@ public class JsonSerializer {
 
     private void serializeClasses(JsonValue<?> jsonValue) {
         if (jsonValue.getClass() == JsonObject.class) {
+            json += "\n";
+            indent();
             json += "{\n";
             tabs++;
             serialize(jsonValue);
@@ -52,13 +54,9 @@ public class JsonSerializer {
             json += "[ \n";
             tabs++;
             for (int i = 0; i < list.size(); i++) {
-                if (list.get(i).getClass() == JsonObject.class) {
-                    serialize(list.get(i));
-                }
-                else {
-                    serializeClasses(list.get(i));
-                }
-                if (i < list.size() - 1) {
+                indent();
+                serializeClasses(list.get(i));
+                if (i+1 < list.size()) {
                     json += " , ";
                 }
             }
@@ -66,7 +64,7 @@ public class JsonSerializer {
             tabs--;
             json += "\n";
             indent();
-            json += "] \n";
+            json += "] ";
         }
         else {
             json += jsonValue.getValue();

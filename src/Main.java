@@ -77,22 +77,21 @@ public class Main {
 
         String json155 = "{\n" +
                 "  \"action\": \"studentInfo\",\n" +
+                "  \"number\": 85 ,\n" +
                 "  \"data\": {\n" +
                 "    \"studentByGPA\": [\n" +
                 "      {\n" +
                 "        \"name\": \"hossein\",\n" +
-                "        \"GPA\": 12\n" +
+                "        \"GPA\": 12 , \n" +
+                "        \"namme\": \"hosdjnsein\",\n" +
+                "        \"GPjidA\": 12.8\n" +
                 "      },\n" +
-                "      {\n" +
-                "        \"name\": \"reza\",\n" +
-                "        \"GPA\": 18.5\n" +
-                "      }\n" +
                 "    ]\n" +
                 "  }\n" +
                 "}";
 
 
-        JsonObject JSON = new JsonObject(json155);
+        JsonObject JSON = new JsonObject(json4);
 
         JSON.getInput(System.in);
 
